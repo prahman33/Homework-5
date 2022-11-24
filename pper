@@ -1,0 +1,4 @@
+from math import factorial
+n,k=84,9
+P=int(factorial(n)/factorial(n-k)%1000000)
+print(P)
