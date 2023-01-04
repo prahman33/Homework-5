@@ -1,1 +1,22 @@
-
+import requests
+import re
+solution=open("C:/Users/pc/Downloads/solution.txt.txt",'w')
+f=open(r"C:/Users/pc/Downloads/rosalind_mprt (2).txt").readlines()
+ii,res=[],[]
+for l in f:
+    i=l[0:6]
+    ii.append(i)
+path="http://www.uniprot.org/uniprotkb/"
+for x in ii:
+    uniprot=path + x + ".fasta"
+    proturl=uniprot.format(x)
+    response=requests.get(proturl)
+    protsq="".join(response.text.split("\n")[1:])
+    result=[int(x.start()+1) for x in re.finditer(r'(?=(N[^P][ST][^P]))',protsq)]
+    res.append(result)
+    if len(result)==0:
+        continue        
+for j in range(len(ii)):
+    if len(res[j])!=0:
+        solution.write(f[j]+' '.join(map(str,res[j]))+'\n')
+solution.close()
